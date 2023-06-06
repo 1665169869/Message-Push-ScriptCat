@@ -1,0 +1,24 @@
+{
+  "name": "scriptcat-push-weixin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "PushCat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.21.5",
+    "@babel/core": "^7.22.1",
+    "@babel/preset-env": "^7.22.4",
+    "babel-loader": "^9.1.2",
+    "clean-webpack-plugin": "^4.0.0",
+    "scriptcat-webpack-plugin": "^1.1.0",
+    "webpack": "^5.85.0",
+    "webpack-cli": "^5.1.3"
+  }
+}
