@@ -2,11 +2,12 @@
  * @Author: 白羽
  * @Date: 2023-06-05 16:48:42
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-06 12:57:29
+ * @LastEditTime: 2023-06-07 01:09:00
  * @FilePath: \scriptcat-push-weixin\src\MAIN.js
  * @Description: 微信推送定时小工具 - 脚本猫
  */
-import APIs from "./js/APIs";
+import APIs from "./utils/APIs";
+
 const text = `
 ## lorem12345
 
@@ -32,29 +33,31 @@ const push = new PushCat({
     accessKey: config.accessKey
 });
 
-APIs.weatherQuery("广东省", "清远").then(resp => {
-    if (resp.status == 200) {
-        //  {"temperature":26.8,"temperatureDiff":-1.4,"airpressure":9999,"humidity":88,"rain":0,"rcomfort":72,"icomfort":1,"info":"晴","img":"0","feelst":24.8}
-        //  返回如上Json
-        //  |-------------------------------|
-        //  | airpressure     |  未知       |
-        //  | feelst          | 体感温度     |
-        //  | humidity        | 相对湿度     |
-        //  | icomfort        | 未知        |
-        //  | rain            | 降雨量(mm)  |
-        //  | info            | 天气(多云)  |
-        //  | temperature     | 温度       |
-        //  | info            | 天气(多云)  |
-        //  | temperatureDiff | 未知       |
-        //  | rcomfort        | 未知       |
-        //  |-----------------------------|
-        const { data: { real: { weather: weatherData } } } = JSON.parse(resp.responseText);
+// APIs.weatherQuery("广东省", "清远").then(resp => {
+//     if (resp.status == 200) {
+//         //  {"temperature":26.8,"temperatureDiff":-1.4,"airpressure":9999,"humidity":88,"rain":0,"rcomfort":72,"icomfort":1,"info":"晴","img":"0","feelst":24.8}
+//         //  返回如上Json
+//         //  |-------------------------------|
+//         //  | airpressure     |  未知       |
+//         //  | feelst          | 体感温度     |
+//         //  | humidity        | 相对湿度     |
+//         //  | icomfort        | 未知        |
+//         //  | rain            | 降雨量(mm)  |
+//         //  | info            | 天气(多云)  |
+//         //  | temperature     | 温度       |
+//         //  | info            | 天气(多云)  |
+//         //  | temperatureDiff | 未知       |
+//         //  | rcomfort        | 未知       |
+//         //  |-----------------------------|
+//         const { data: { real: { weather: weatherData } } } = JSON.parse(resp.responseText);
 
-        let textContent = config.content.replace(/\{\{weather\}\}/, `\n清远 ${weatherData.info}\n当前温度：${weatherData.temperature}℃\n体感温度：${weatherData.feelst}℃\n相对湿度：${weatherData.humidity}℃`);
-        pushSend(config.title,textContent);
-    }
-});
+//         let textContent = config.content.replace(/\{\{weather\}\}/, `\n清远 ${weatherData.info}\n当前温度：${weatherData.temperature}℃\n体感温度：${weatherData.feelst}℃\n相对湿度：${weatherData.humidity}℃`);
+//         pushSend(config.title,textContent);
+//     }
+// });
 
+console.log(await APIs.getWeather("广东省", "清远市"));
+console.log(await APIs.getCIBA());
 function pushSend(title, content, target = {}) {
     return new Promise((resolve, reject) => {
         push.send(title, content, target).then(resp => {

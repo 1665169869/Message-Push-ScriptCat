@@ -2,7 +2,7 @@
  * @Author: 白羽
  * @Date: 2023-06-05 20:47:21
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-05 23:48:06
+ * @LastEditTime: 2023-06-07 01:02:55
  * @FilePath: \scriptcat-push-weixin\webpack.config.js
  * @Description: 
  */
@@ -39,7 +39,12 @@ module.exports = {
     ],
     module: {
         rules: [
-            {test: /\.js$/, use: 'babel-loader', exclude: /node_modules/, include: [path.resolve(__dirname, '@')]}
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                include: [path.resolve(__dirname, '@')],
+                use: { loader: 'babel-loader', },
+            }
         ]
     },
     resolve: {

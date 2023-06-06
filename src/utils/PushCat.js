@@ -1,5 +1,5 @@
 // pushcat自定义设备,可接收消息推送并通知
-window.PushCatDevice = /** @class */ (function () {
+export const PushCatDevice = /** @class */ (function () {
     function PushCatDevice(param) {
         var _this = this;
         this.accessKey = param.accessKey;
@@ -70,7 +70,7 @@ window.PushCatDevice = /** @class */ (function () {
     };
     return PushCatDevice;
 }());
-window.PushCat = /** @class */ (function () {
+export const PushCat = /** @class */ (function () {
     function PushCat(param) {
         this.accessKey = param.accessKey;
         this.host = param.host || "https://sct.icodef.com/";
