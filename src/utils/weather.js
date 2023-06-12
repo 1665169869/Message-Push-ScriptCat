@@ -2,12 +2,35 @@
  * @Author: 白羽
  * @Date: 2023-06-05 19:35:10
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-07 00:45:20
+ * @LastEditTime: 2023-06-12 23:10:47
  * @FilePath: \scriptcat-push-weixin\src\utils\weather.js
  * @Description: 天气模块，获取中央气象台的接口进行封装
  */
 import { WEATHER_CITY } from "../store/index";
 
+
+// weatherQueryReponse("广东省", "清远").then(resp => {
+//     if (resp.status == 200) {
+//         //  {"temperature":26.8,"temperatureDiff":-1.4,"airpressure":9999,"humidity":88,"rain":0,"rcomfort":72,"icomfort":1,"info":"晴","img":"0","feelst":24.8}
+//         //  返回如上Json
+//         //  |-------------------------------|
+//         //  | airpressure     |  未知       |
+//         //  | feelst          | 体感温度     |
+//         //  | humidity        | 相对湿度     |
+//         //  | icomfort        | 未知        |
+//         //  | rain            | 降雨量(mm)  |
+//         //  | info            | 天气(多云)  |
+//         //  | temperature     | 温度       |
+//         //  | info            | 天气(多云)  |
+//         //  | temperatureDiff | 未知       |
+//         //  | rcomfort        | 未知       |
+//         //  |-----------------------------|
+//         const { data: { real: { weather: weatherData } } } = JSON.parse(resp.responseText);
+
+//         let textContent = config.content.replace(/\{\{weather\}\}/, `\n清远 ${weatherData.info}\n当前温度：${weatherData.temperature}℃\n体感温度：${weatherData.feelst}℃\n相对湿度：${weatherData.humidity}℃`);
+//         pushSend(config.title,textContent);
+//     }
+// });
 
 /**
 * 查询某个省份下的城市code代码 返回一个**Promise对象** 成功传参*response* 自行调用查看返回值
@@ -144,17 +167,36 @@ const getWeatherCityInfo = (province, city) => {
 }
 
 /**
+ * 获取天气icon
+ * @param {*} weather
+ * @returns
+ */
+export const getWeatherIcon = (weather) => {
+    let weatherIcon = '🌈'
+    const weatherIconList = ['☀️', '☁️', '⛅️',
+      '☃️', '⛈️', '🏜️', '🏜️', '🌫️', '🌫️', '🌪️', '🌧️']
+    const weatherType = ['晴', '阴', '云', '雪', '雷', '沙', '尘', '雾', '霾', '风', '雨']
+  
+    weatherType.forEach((item, index) => {
+      if (weather.indexOf(item) !== -1) {
+        weatherIcon = weatherIconList[index]
+      }
+    })
+  
+    return weatherIcon;
+  }
+
+/**
  * 获取天气情况
  * @param {*} province 省份
  * @param {*} city 城市
  */
-
 export const getWeather = async (province, city) => {
 
     const cityInfo = getWeatherCityInfo(province, city)
     if (!cityInfo) {
-        console.error('配置文件中找不到相应的省份或城市')
-        return {}
+        GM_log('配置文件中找不到相应的省份或城市', "error");
+        return {};
     }
     const url = `http://t.weather.itboy.net/api/weather/city/${cityInfo.city_code}`
 
@@ -180,13 +222,13 @@ export const getWeather = async (province, city) => {
         const commonInfo = res.response.data
         const info = commonInfo && commonInfo.forecast && commonInfo.forecast[0]
         if (!info) {
-            console.error('天气情况: 找不到天气信息, 获取失败')
+            GM_log('天气情况: 找不到天气信息, 获取失败', "error");
             return {}
         }
 
         const result = {
             // 湿度
-            shidu: commonInfo.shidu,
+            humidity: commonInfo.shidu,
             // PM2.5
             pm25: commonInfo.pm25,
             // PM1.0
@@ -194,28 +236,28 @@ export const getWeather = async (province, city) => {
             // 空气质量
             quality: commonInfo.quality,
             // 预防感冒提醒
-            ganmao: commonInfo.ganmao,
+            cpr: commonInfo.ganmao,
             // 日出时间
-            sunrise: info.sunrise,
+            sunrise_time: info.sunrise,
             // 日落时间
-            sunset: info.sunset,
+            sunset_time: info.sunset,
             // 空气质量指数
             aqi: info.aqi,
             // 天气情况
             weather: info.type,
             // 最高温度
-            maxTemperature: info.high.replace(/^高温\s*/, ''),
+            max_temperature: info.high.replace(/^高温\s*/, ''),
             // 最低温度
-            minTemperature: info.low.replace(/^低温\s*/, ''),
+            min_temperature: info.low.replace(/^低温\s*/, ''),
             // 风向
-            windDirection: info.fx,
+            wind_direction: info.fx,
             // 风力等级
-            windScale: info.fl,
+            wind_scale: info.fl,
             // 温馨提示
             notice: info.notice,
         }
         return result;
     }
-    console.error('天气情况获取失败', res)
+    GM_log(`天气情况获取失败 status: ${res.status}`, "error")
     return {}
 }
