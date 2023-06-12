@@ -2,79 +2,106 @@
  * @Author: 白羽
  * @Date: 2023-06-05 16:48:42
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-07 01:09:00
+ * @LastEditTime: 2023-06-12 23:34:26
  * @FilePath: \scriptcat-push-weixin\src\MAIN.js
- * @Description: 微信推送定时小工具 - 脚本猫
+ * @Description: 程序入口 微信推送定时小工具 - 脚本猫
  */
 import APIs from "./utils/APIs";
+import tamplates from "./tamplate/index";
 
-const text = `
-## lorem12345
+const globalConfig = {
+    // accessKey 唯一
+    accessKey: "",
+    // title 推送的标题
+    title: "",
+    // 推送内容 支持Html和Markdwon语法
+    tamplate: "",
+};
+globalConfig.accessKey = GM_getValue("用户配置.AccessKey");
+globalConfig.title = GM_getValue("用户配置.推送标题");
+globalConfig.tamplate = tamplates[0];
 
-1. 你好
-2. 再见
 
-☁️：
-{{weather}}
-`;
-
-const config = {
-    accessKey: "57r91b2wgl4qmn97", // access_key
-    title: `标题`, // 消息标题，最大长度为128
-    content: text, //	消息内容，长度在2-4096之间
-    target: {
-        devices: "default" // default默认为推送工具箱公众号
+const DATA = { // 用于存放数据
+    uname: "宝宝",
+    // 推送人昵称(随意)
+    province: "广东",
+    // 省份
+    city: "广州",
+    // 城市
+    date: APIs.getDate(),
+    // 日期 YYYY-MM-DD 星期d
+    weather: { // 用于存储任何天气信息
+        // 天气
+        weather: "阵雨转多云",
+        // 最高气温
+        max_temperature: "25℃ ",
+        // 最低气温
+        min_temperature: "20℃ ",
+        // 风向
+        wind_direction: "持续东南风",
+        // 风级
+        wind_scale: "<3级",
+        // 湿度
+        humidity: "50%",
+        // 日出时间
+        sunrise_time: "06:20",
+        // 日落时间
+        sunset_time: "06:20",
+        // 空气质量指数(Air quality index)
+        aqi: "40",
+        // 预防感冒提醒(Cold Prevention Reminder)
+        cpr: "儿童、老年人及心脏、呼吸系统疾病患者人群应减少长时间或高强度户外锻炼",
+        // 天气温馨语
+        notice: "雨虽小，注意保暖别感",
+        // PM2.5
+        pm25: "36",
+        // PM1.0
+        pm10: "54",
     }
-}
+};
 
-console.log(config);
 
 const push = new PushCat({
-    accessKey: config.accessKey
+    accessKey: globalConfig.accessKey
 });
 
-// APIs.weatherQuery("广东省", "清远").then(resp => {
-//     if (resp.status == 200) {
-//         //  {"temperature":26.8,"temperatureDiff":-1.4,"airpressure":9999,"humidity":88,"rain":0,"rcomfort":72,"icomfort":1,"info":"晴","img":"0","feelst":24.8}
-//         //  返回如上Json
-//         //  |-------------------------------|
-//         //  | airpressure     |  未知       |
-//         //  | feelst          | 体感温度     |
-//         //  | humidity        | 相对湿度     |
-//         //  | icomfort        | 未知        |
-//         //  | rain            | 降雨量(mm)  |
-//         //  | info            | 天气(多云)  |
-//         //  | temperature     | 温度       |
-//         //  | info            | 天气(多云)  |
-//         //  | temperatureDiff | 未知       |
-//         //  | rcomfort        | 未知       |
-//         //  |-----------------------------|
-//         const { data: { real: { weather: weatherData } } } = JSON.parse(resp.responseText);
-
-//         let textContent = config.content.replace(/\{\{weather\}\}/, `\n清远 ${weatherData.info}\n当前温度：${weatherData.temperature}℃\n体感温度：${weatherData.feelst}℃\n相对湿度：${weatherData.humidity}℃`);
-//         pushSend(config.title,textContent);
-//     }
-// });
-
-console.log(await APIs.getWeather("广东省", "清远市"));
-console.log(await APIs.getCIBA());
-function pushSend(title, content, target = {}) {
+/**
+ * pushSend
+ * @param {*} title 推送标题
+ * @param {*} content 推送内容 会自动替换掉模板字符串
+ * @returns {Promise} then(response) catch()
+ */
+const pushSend = (title, content, [target = {}]) => {
+    content = APIs.replaceTemplate(DATA, content)
     return new Promise((resolve, reject) => {
         push.send(title, content, target).then(resp => {
             const { status, statusText } = resp;
             GM_log(`status_code: ${status} -- status_text: ${statusText}`);
             if (status == 200) {
-                GM_log(resp.responseText);
+                GM_log(resp.responseText, "info");
             }
 
             resolve(resp);
         }).catch(() => {
-            GM_log("推送失败");
+            GM_log("推送失败", "error");
             reject();
         });
     });
 }
 
 
+return new Promise(async (resolve) => {
+    DATA.weather = await APIs.getWeather(DATA.province, DATA.city);
 
-// pushSend(config.title, config.content);
+    pushSend().catch(() => {
+        GM_notification({
+            title: "推送失败",
+            text: "推送失败 点我打开菜单",
+            onclick() {
+                CAT_userconfig();
+            }
+        })
+    })
+})
+
