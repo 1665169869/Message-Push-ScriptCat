@@ -2,7 +2,7 @@
  * @Author: 白羽
  * @Date: 2023-06-05 20:47:21
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-12 22:31:21
+ * @LastEditTime: 2023-06-12 23:58:09
  * @FilePath: \scriptcat-push-weixin\webpack.config.js
  * @Description: 
  */
@@ -17,12 +17,20 @@ const USERCONFIG = {
             type: "text",
             description: "sciprtpush accessKey"
         },
-        "推送标题": {
+        push_title: {
             title: "推送标题",
             type: "text",
             description: "推送的标题 不支持模板字符串",
             default: "宝宝的专属推送"
-        }
+        },
+        city: {
+            title: "城市",
+            type: "text",
+        },
+        province: {
+            title: "省份",
+            type: "text",
+        },
     }
 }
 
