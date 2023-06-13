@@ -2,7 +2,7 @@
  * @Author: 白羽
  * @Date: 2023-06-05 20:47:21
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-12 23:58:09
+ * @LastEditTime: 2023-06-13 00:25:01
  * @FilePath: \scriptcat-push-weixin\webpack.config.js
  * @Description: 
  */
@@ -54,7 +54,9 @@ module.exports = {
                 grant: [
                     "GM_xmlhttpRequest",
                     "GM_log",
-                    "GM_getValue"
+                    "GM_getValue",
+                    "GM_notification",
+                    "CAT_userConfig"
                 ],
                 require: [
                     "https://scriptcat.org/lib/946/%5E1.0.1/PushCat.js"
