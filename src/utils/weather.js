@@ -2,12 +2,11 @@
  * @Author: 白羽
  * @Date: 2023-06-05 19:35:10
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-12 23:10:47
+ * @LastEditTime: 2023-06-13 20:58:05
  * @FilePath: \scriptcat-push-weixin\src\utils\weather.js
  * @Description: 天气模块，获取中央气象台的接口进行封装
  */
 import { WEATHER_CITY } from "../store/index";
-
 
 // weatherQueryReponse("广东省", "清远").then(resp => {
 //     if (resp.status == 200) {
@@ -174,17 +173,17 @@ const getWeatherCityInfo = (province, city) => {
 export const getWeatherIcon = (weather) => {
     let weatherIcon = '🌈'
     const weatherIconList = ['☀️', '☁️', '⛅️',
-      '☃️', '⛈️', '🏜️', '🏜️', '🌫️', '🌫️', '🌪️', '🌧️']
+        '☃️', '⛈️', '🏜️', '🏜️', '🌫️', '🌫️', '🌪️', '🌧️']
     const weatherType = ['晴', '阴', '云', '雪', '雷', '沙', '尘', '雾', '霾', '风', '雨']
-  
+
     weatherType.forEach((item, index) => {
-      if (weather.indexOf(item) !== -1) {
-        weatherIcon = weatherIconList[index]
-      }
+        if (weather.indexOf(item) !== -1) {
+            weatherIcon = weatherIconList[index]
+        }
     })
-  
+
     return weatherIcon;
-  }
+}
 
 /**
  * 获取天气情况
@@ -227,6 +226,8 @@ export const getWeather = async (province, city) => {
         }
 
         const result = {
+            // 温度
+            temperature: commonInfo.wendu,
             // 湿度
             humidity: commonInfo.shidu,
             // PM2.5
