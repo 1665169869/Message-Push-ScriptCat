@@ -2,12 +2,18 @@
  * @Author: 白羽
  * @Date: 2023-06-05 19:34:50
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-13 21:42:24
+ * @LastEditTime: 2023-06-14 00:05:32
  * @FilePath: \scriptcat-push-weixin\src\utils\APIs.js
  * @Description: 
  */
 import { weatherQueryReponse, getWeather } from "./weather";
-import { getCIBA } from "./other";
+import {
+    getCIBA,
+    getEarthyLoveWords,
+    getMomentCopyrighting,
+    getPoisonChickenSoup
+} from "./other";
+
 
 export default {
     /**
@@ -16,6 +22,9 @@ export default {
     weatherQueryReponse,
     getWeather,
     getCIBA,
+    getEarthyLoveWords,
+    getMomentCopyrighting,
+    getPoisonChickenSoup,
     /**
      * 替换模板字符串{{DATA.*}}
      * @param {object} DATA 正则表达式会搜寻{{DATA.*}}的模板字符串 所以请将数据全部存放到这
