@@ -2,7 +2,7 @@
  * @Author: 白羽
  * @Date: 2023-06-05 20:47:21
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-13 20:52:39
+ * @LastEditTime: 2023-06-14 00:00:08
  * @FilePath: \scriptcat-push-weixin\webpack.config.js
  * @Description: 
  */
@@ -12,6 +12,27 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const USERCONFIG = {
     "信息配置": {
+        uname: {
+            title: "推送人昵称",
+            type: "text",
+            description: "推送人昵称如：宝宝",
+            default: "宝宝"
+        },
+        love_day: {
+            title: "在一起时间",
+            type: "text",
+            description: "格式: YYYY-MM-DD 如: 2022-5-20"
+        },
+        province: {
+            title: "省份",
+            type: "text",
+        },
+        city: {
+            title: "城市",
+            type: "text",
+        },
+    },
+    "推送设置": {
         accessKey: {
             title: "accessKey",
             type: "text",
@@ -23,19 +44,10 @@ const USERCONFIG = {
             description: "推送的标题 不支持模板字符串",
             default: "宝宝的专属推送"
         },
-        province: {
-            title: "省份",
-            type: "text",
-        },
-        city: {
-            title: "城市",
-            type: "text",
-        },
-        uname: {
-            title: "推送人昵称",
-            type: "text",
-            description: "推送人昵称如：宝宝",
-            default: "宝宝"
+        push_content: {
+            title: "推送内容",
+            type: "textarea", // 等脚本猫更新支持长文本
+            description: "推送的内容 支持模板字符串",
         }
     }
 }

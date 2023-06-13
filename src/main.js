@@ -2,7 +2,7 @@
  * @Author: 白羽
  * @Date: 2023-06-05 16:48:42
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-13 21:47:13
+ * @LastEditTime: 2023-06-14 00:08:21
  * @FilePath: \scriptcat-push-weixin\src\MAIN.js
  * @Description: 程序入口 微信推送定时小工具 - 脚本猫
  */
@@ -16,11 +16,12 @@ const globalConfig = {
     // 推送内容 支持Html和Markdwon语法
     tamplate: "",
 };
-globalConfig.accessKey = GM_getValue("信息配置.accessKey", null);
-globalConfig.title = GM_getValue("信息配置.push_title", "宝宝的专属推送");
+globalConfig.accessKey = GM_getValue("推送配置.accessKey", null);
+globalConfig.title = GM_getValue("推送配置.push_title", "宝宝的专属推送");
 globalConfig.province = GM_getValue("信息配置.province", null);
 globalConfig.city = GM_getValue("信息配置.city", null);
 globalConfig.uname = GM_getValue("信息配置.uname", "宝宝");
+globalConfig.uname = GM_getValue("信息配置.love_day", null);
 globalConfig.tamplate = `
 🗓️{{DATA.date}}
 
@@ -33,7 +34,7 @@ globalConfig.tamplate = `
 
 {{DATA.weather.notice}}
 
-💌{{earthy_love_words.DATA}}
+💌{{DATA.daily_one_sentences.earthy_love_words}}
 `.trim();
 
 const globalData = { // 用于存放数据
@@ -45,6 +46,15 @@ const globalData = { // 用于存放数据
     city: globalConfig.city,
     // 日期 YYYY-MM-DD 星期d
     date: APIs.getDate(),
+    // 每日一句
+    daily_one_sentences: {
+        // 朋友圈文案
+        moment_copyrighting: "错过太阳就不要再错过月亮了",
+        // 土味情话(彩虹屁)
+        earthy_love_words: "我今晚会很忙，忙着跟你过日子",
+        // 毒鸡汤
+        poison_chicken_soup: "我从不以强凌弱，我欺负他之前，真不晓得他比我弱。",
+    },
     weather: { // 用于存储任何天气信息
         // 温度
         temperature: "24",
@@ -108,10 +118,8 @@ function pushSend(title, content, target = {}) {
 
 
 new Promise(async (resolve) => {
-    // globalData.weather
-    globalData.weather = await APIs.getWeather(globalData.province, globalData.city);
 
-    // 
+    // 效验是否设置以下属性值
     if (!globalConfig.accessKey) {
         GM_notification({
             title: "accessKey未设置",
@@ -130,7 +138,20 @@ new Promise(async (resolve) => {
             text: "请设置推送人的城市",
         });
         resolve(CAT_userConfig());
+    } else if (!globalConfig.love_day) {
+        GM_notification({
+            title: "未设置在一起时间",
+            text: "请设置在一起时间",
+        });
+        resolve(CAT_userConfig());
     }
+
+
+    // globalData.weather 初始化
+    globalData.weather = await APIs.getWeather(globalData.province, globalData.city);
+    globalData.daily_one_sentences.earthy_love_words = await APIs.getEarthyLoveWords();
+    globalData.daily_one_sentences.moment_copyrighting = await APIs.getMomentCopyrighting();
+    globalData.daily_one_sentences.poison_chicken_soup = await APIs.getPoisonChickenSoup();
 
     pushSend(globalConfig.title, globalConfig.tamplate)
         .then(() => {
