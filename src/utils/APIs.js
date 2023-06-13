@@ -2,7 +2,7 @@
  * @Author: 白羽
  * @Date: 2023-06-05 19:34:50
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-12 21:35:05
+ * @LastEditTime: 2023-06-13 20:31:28
  * @FilePath: \scriptcat-push-weixin\src\utils\APIs.js
  * @Description: 
  */
@@ -10,9 +10,6 @@ import { weatherQueryReponse, getWeather } from "./weather";
 import { getCIBA } from "./other";
 import { PushCat } from "./PushCat";
 
-const sendMessageReply = (accessKey, title = null, textContent = null) => {
-
-}
 
 export default {
     /**
@@ -20,7 +17,6 @@ export default {
     */
     weatherQueryReponse,
     getWeather,
-    sendMessageReply,
     getCIBA,
     /**
      * 替换模板字符串{{DATA.*}}
@@ -29,12 +25,12 @@ export default {
      * @returns {string} 返回被替换的文本
      */
     replaceTemplate(DATA = {}, str = "") {
-        const regex = /\{\{(DATA\..*)\}\}/gm
+        const regex = /\{\{(DATA\.[_|a-z|A-Z][\d|\w]*)\}\}/gm
         let match;
-        while ((match = regex.exec(tamplate)) !== null) {
-            str = str.replace(match[0], eval(match[0]));
+        while ((match = regex.exec(str)) !== null) {
+            str = str.replace(match[0], eval(match[1]));
         }
-        return str
+        return str;
     },
     /**
      * 
