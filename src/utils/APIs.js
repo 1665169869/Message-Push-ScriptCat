@@ -2,14 +2,12 @@
  * @Author: 白羽
  * @Date: 2023-06-05 19:34:50
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-13 20:31:28
+ * @LastEditTime: 2023-06-13 21:42:24
  * @FilePath: \scriptcat-push-weixin\src\utils\APIs.js
  * @Description: 
  */
 import { weatherQueryReponse, getWeather } from "./weather";
 import { getCIBA } from "./other";
-import { PushCat } from "./PushCat";
-
 
 export default {
     /**
@@ -25,11 +23,12 @@ export default {
      * @returns {string} 返回被替换的文本
      */
     replaceTemplate(DATA = {}, str = "") {
-        const regex = /\{\{(DATA\.[_|a-z|A-Z][\d|\w]*)\}\}/gm
-        let match;
-        while ((match = regex.exec(str)) !== null) {
+        const regex = /\{\{(DATA\.[_|a-z|A-Z\d|\w|\.]*)\}\}/gm;
+        let matches = [...str.matchAll(regex)];
+        matches.forEach(match => {
             str = str.replace(match[0], eval(match[1]));
-        }
+        });
+        debugger
         return str;
     },
     /**
