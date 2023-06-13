@@ -2,12 +2,11 @@
  * @Author: 白羽
  * @Date: 2023-06-05 16:48:42
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-12 23:34:26
+ * @LastEditTime: 2023-06-13 21:47:13
  * @FilePath: \scriptcat-push-weixin\src\MAIN.js
  * @Description: 程序入口 微信推送定时小工具 - 脚本猫
  */
 import APIs from "./utils/APIs";
-import tamplates from "./tamplate/index";
 
 const globalConfig = {
     // accessKey 唯一
@@ -17,21 +16,38 @@ const globalConfig = {
     // 推送内容 支持Html和Markdwon语法
     tamplate: "",
 };
-globalConfig.accessKey = GM_getValue("用户配置.AccessKey");
-globalConfig.title = GM_getValue("用户配置.推送标题");
-globalConfig.tamplate = tamplates[0];
+globalConfig.accessKey = GM_getValue("信息配置.accessKey", null);
+globalConfig.title = GM_getValue("信息配置.push_title", "宝宝的专属推送");
+globalConfig.province = GM_getValue("信息配置.province", null);
+globalConfig.city = GM_getValue("信息配置.city", null);
+globalConfig.uname = GM_getValue("信息配置.uname", "宝宝");
+globalConfig.tamplate = `
+🗓️{{DATA.date}}
 
+{{DATA.uname}}，今天是我们在一起的第{{love_day.DATA}}天，爱你❤️
+    
+今日{{DATA.city}}天气☁️：{{DATA.weather.weather}}
+当前温度🌡️: {{DATA.weather.temperature}}度
+最低温度🌡️: {{DATA.weather.min_temperature}}
+最高温度🌡️: {{DATA.weather.max_temperature}}
 
-const DATA = { // 用于存放数据
-    uname: "宝宝",
+{{DATA.weather.notice}}
+
+💌{{earthy_love_words.DATA}}
+`.trim();
+
+const globalData = { // 用于存放数据
     // 推送人昵称(随意)
-    province: "广东",
+    uname: globalConfig.uname,
     // 省份
-    city: "广州",
+    province: globalConfig.province,
     // 城市
-    date: APIs.getDate(),
+    city: globalConfig.city,
     // 日期 YYYY-MM-DD 星期d
+    date: APIs.getDate(),
     weather: { // 用于存储任何天气信息
+        // 温度
+        temperature: "24",
         // 天气
         weather: "阵雨转多云",
         // 最高气温
@@ -72,8 +88,8 @@ const push = new PushCat({
  * @param {*} content 推送内容 会自动替换掉模板字符串
  * @returns {Promise} then(response) catch()
  */
-const pushSend = (title, content, [target = {}]) => {
-    content = APIs.replaceTemplate(DATA, content)
+function pushSend(title, content, target = {}) {
+    content = APIs.replaceTemplate(globalData, content)
     return new Promise((resolve, reject) => {
         push.send(title, content, target).then(resp => {
             const { status, statusText } = resp;
@@ -91,17 +107,47 @@ const pushSend = (title, content, [target = {}]) => {
 }
 
 
-return new Promise(async (resolve) => {
-    DATA.weather = await APIs.getWeather(DATA.province, DATA.city);
+new Promise(async (resolve) => {
+    // globalData.weather
+    globalData.weather = await APIs.getWeather(globalData.province, globalData.city);
 
-    pushSend().catch(() => {
+    // 
+    if (!globalConfig.accessKey) {
         GM_notification({
-            title: "推送失败",
-            text: "推送失败 点我打开菜单",
-            onclick() {
-                CAT_userconfig();
-            }
+            title: "accessKey未设置",
+            text: "accessKey为空 请设置accessKey",
+        });
+        resolve(CAT_userConfig());
+    } else if (!globalConfig.province) {
+        GM_notification({
+            title: "未设置省份",
+            text: "请设置推送人的省份",
+        });
+        resolve(CAT_userConfig());
+    } else if (!globalConfig.city) {
+        GM_notification({
+            title: "未设置城市",
+            text: "请设置推送人的城市",
+        });
+        resolve(CAT_userConfig());
+    }
+
+    pushSend(globalConfig.title, globalConfig.tamplate)
+        .then(() => {
+            GM_notification({
+                title: "推送成功",
+                text: "推送成功",
+            })
         })
-    })
+        .catch(() => {
+            GM_notification({
+                title: "推送失败",
+                text: "推送失败 点我打开菜单",
+                onclick() {
+                    CAT_userConfig();
+                }
+            })
+        });
+    resolve();
 })
 
