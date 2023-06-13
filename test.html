@@ -2,22 +2,49 @@
  * @Author: 白羽
  * @Date: 2023-06-05 18:49:02
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-05 18:49:05
+ * @LastEditTime: 2023-06-13 21:37:09
  * @FilePath: \scriptcat-push-weixin\test.html
  * @Description: 
 -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <p>
         Lorem, ipsum.
         <!-- <b>Lorem, ipsum.</b> -->
     </p>
+    <script>
+        const tamplate = `
+        🗓️{{DATA.date}}
+
+{{DATA.uname}}，今天是我们在一起的第{{love_day.DATA}}天，爱你❤️
+    
+今日{{DATA.city}}天气☁️：{{DATA.weather.weather}}
+当前温度🌡️: {{DATA.weather.temperature}}度
+最低温度🌡️: {{DATA.weather.min_temperature}}
+最高温度🌡️: {{DATA.weather.max_temperature}}
+
+{{DATA.notice}}
+
+💌{{earthy_love_words.DATA}}
+    `.trim();
+        const regex = /\{\{(DATA\.[_|a-z|A-Z\d|\w|\.]*)\}\}/gm;
+        regex.exec(tamplate)
+
+        let match;
+        while ((match = regex.exec(tamplate)) !== null) {
+            console.log(match[0], match[1]);
+        }
+        
+    </script>
 </body>
+
 </html>
