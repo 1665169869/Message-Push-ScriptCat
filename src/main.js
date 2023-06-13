@@ -2,7 +2,7 @@
  * @Author: 白羽
  * @Date: 2023-06-05 16:48:42
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-14 00:08:21
+ * @LastEditTime: 2023-06-14 00:28:39
  * @FilePath: \scriptcat-push-weixin\src\MAIN.js
  * @Description: 程序入口 微信推送定时小工具 - 脚本猫
  */
@@ -48,6 +48,10 @@ const globalData = { // 用于存放数据
     date: APIs.getDate(),
     // 每日一句
     daily_one_sentences: {
+        // 金山每日一句-英文
+        note_en: "Nothing in this world that's worth having comes easy.",
+        // 金山每日一句-中文
+        note_cn: "这世界上凡是值得拥有的东西，都不易获得。",
         // 朋友圈文案
         moment_copyrighting: "错过太阳就不要再错过月亮了",
         // 土味情话(彩虹屁)
@@ -152,6 +156,11 @@ new Promise(async (resolve) => {
     globalData.daily_one_sentences.earthy_love_words = await APIs.getEarthyLoveWords();
     globalData.daily_one_sentences.moment_copyrighting = await APIs.getMomentCopyrighting();
     globalData.daily_one_sentences.poison_chicken_soup = await APIs.getPoisonChickenSoup();
+    const {content: note_en, note: note_cn} = await APIs.getCIBA();
+    globalData.daily_one_sentences.note_cn = note_cn;
+    globalData.daily_one_sentences.note_en = note_en;
+
+
 
     pushSend(globalConfig.title, globalConfig.tamplate)
         .then(() => {
@@ -163,7 +172,7 @@ new Promise(async (resolve) => {
         .catch(() => {
             GM_notification({
                 title: "推送失败",
-                text: "推送失败 点我打开菜单",
+                text: "推送失败",
                 onclick() {
                     CAT_userConfig();
                 }
