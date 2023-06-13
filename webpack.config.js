@@ -2,7 +2,7 @@
  * @Author: 白羽
  * @Date: 2023-06-05 20:47:21
  * @LastEditors: 白羽
- * @LastEditTime: 2023-06-13 00:25:01
+ * @LastEditTime: 2023-06-13 20:52:39
  * @FilePath: \scriptcat-push-weixin\webpack.config.js
  * @Description: 
  */
@@ -23,14 +23,20 @@ const USERCONFIG = {
             description: "推送的标题 不支持模板字符串",
             default: "宝宝的专属推送"
         },
-        city: {
-            title: "城市",
-            type: "text",
-        },
         province: {
             title: "省份",
             type: "text",
         },
+        city: {
+            title: "城市",
+            type: "text",
+        },
+        uname: {
+            title: "推送人昵称",
+            type: "text",
+            description: "推送人昵称如：宝宝",
+            default: "宝宝"
+        }
     }
 }
 
