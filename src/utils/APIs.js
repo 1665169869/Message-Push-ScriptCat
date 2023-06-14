@@ -11,7 +11,8 @@ import {
     getCIBA,
     getEarthyLoveWords,
     getMomentCopyrighting,
-    getPoisonChickenSoup
+    getPoisonChickenSoup,
+    getTimeDifference
 } from "./other";
 
 
@@ -25,6 +26,7 @@ export default {
     getEarthyLoveWords,
     getMomentCopyrighting,
     getPoisonChickenSoup,
+    getTimeDifference,
     /**
      * 替换模板字符串{{DATA.*}}
      * @param {object} _DATA 正则表达式会搜寻{{DATA.*}}的模板字符串 所以请将数据全部存放到这

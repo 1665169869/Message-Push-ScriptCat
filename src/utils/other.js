@@ -18,12 +18,7 @@ import { TYPE_LIST } from "../store/index";
 export const getTimeDifference = (currentTime, lastTime) => {
     // 计算两个时间戳之间的差值（单位是毫秒）
     const timeDifference = currentTime - lastTime;
-
-    // 如果相差不到1小时，则返回0
-    if (timeDifference < 60 * 60 * 1000) {
-        return 0;
-    }
-
+    
     // 将时间差转换为小时数，并保留一位小数
     const hourDifference = parseFloat((timeDifference / 1000 / 60 / 60).toFixed(1));
 

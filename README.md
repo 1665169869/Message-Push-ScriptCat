@@ -27,10 +27,11 @@
 
 |名称|说明|示例值|
 |--|--|--|
-|uname|推送人昵称|宝宝|
+|DATA.uname|推送人昵称|宝宝|
 |DATA.date|日期时间|YYYY-MM-DD 星期d|
 |DATA.province|推送人省份|广东|
 |DATA.city|推送人城市|广州|
+|DATA.love_day|在一起时间 {Int} (最低第一天)|521|
 
 ### 天气信息 DATA.weather
 

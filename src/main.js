@@ -46,6 +46,8 @@ const globalData = { // 用于存放数据
     city: globalConfig.city,
     // 日期 YYYY-MM-DD 星期d
     date: APIs.getDate(),
+    // 在一起时间 {Int} (最低第一天)
+    love_day: 1,
     // 每日一句
     daily_one_sentences: {
         // 金山每日一句-英文
@@ -159,7 +161,9 @@ new Promise(async (resolve) => {
     const {content: note_en, note: note_cn} = await APIs.getCIBA();
     globalData.daily_one_sentences.note_cn = note_cn;
     globalData.daily_one_sentences.note_en = note_en;
-
+    // 取上一次时间戳和当前时间戳然后除以24则得到在一起时间 (currentTime , lastTime) / 24 + 1
+    // 比如昨天在一起，今天则在一起第二天
+    globalData.love_day = parseInt(APIs.getTimeDifference(new Date().getTime(), new Date(globalConfig.love_day).getTime()) / 24) + 1;
 
 
     pushSend(globalConfig.title, globalConfig.tamplate)
