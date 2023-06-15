@@ -29,11 +29,11 @@ export default {
     getTimeDifference,
     /**
      * 替换模板字符串{{DATA.*}}
-     * @param {object} _DATA 正则表达式会搜寻{{DATA.*}}的模板字符串 所以请将数据全部存放到这
+     * @param {object} DATA 正则表达式会搜寻{{DATA.*}}的模板字符串 所以请将数据全部存放到这
      * @param {string} str 需要替换的文本
      * @returns {string} 返回被替换的文本
      */
-    replaceTemplate(_DATA = {}, str = "") {
+    replaceTemplate(DATA = {}, str = "") {
         const regex = /\{\{(DATA\.[_|a-z|A-Z\d|\w|\.]*)\}\}/gm;
         let matches = [...str.matchAll(regex)];
         matches.forEach(match => {
