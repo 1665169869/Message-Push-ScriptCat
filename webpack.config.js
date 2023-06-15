@@ -80,7 +80,7 @@ module.exports = {
             file: "scriptcat-push-weixin-user.js",
             name: "微信推送定时小工具 - 脚本猫",
             namespace: "https://bbs.tampermonkey.net.cn/",
-            version: "20230615",
+            version: "202306151351",
             description: "微信推送定时小工具 - 脚本猫 支持自定义模板，拥有模板字符串，程序员给女朋友的每日推送提醒，专属于程序员的浪漫~",
             author: "i白羽",
             metadata: {
