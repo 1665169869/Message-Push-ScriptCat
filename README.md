@@ -11,6 +11,14 @@
 #### 介绍
 微信推送定时小工具 - 脚本猫
 
+脚本猫上的是经过webpack打包压缩后的代码，如需源代码请前往下方👇
+
+> 开源仓库地址
+
+[gitee](https://gitee.com/baiyu16/scriptcat-push-wexin/)
+
+[github](https://github.com/1665169869/scriptcat-push-weixin)
+
 ## 模板字符串
 
 > 食用方法： **{{}}** 来使用模板字符串 比如:
