@@ -7,6 +7,7 @@
  * @Description: 程序入口 微信推送定时小工具 - 脚本猫
  */
 import APIs from "./utils/APIs";
+import { PushCat } from "./utils/PushCat";
 
 const globalConfig = {
     // accessKey 唯一
@@ -16,26 +17,15 @@ const globalConfig = {
     // 推送内容 支持Html和Markdwon语法
     tamplate: "",
 };
-globalConfig.accessKey = GM_getValue("推送配置.accessKey", null);
-globalConfig.title = GM_getValue("推送配置.push_title", "宝宝的专属推送");
+
+globalConfig.accessKey = GM_getValue("推送设置.accessKey", null);
+globalConfig.title = GM_getValue("推送设置.push_title", "宝宝的专属推送");
+globalConfig.tamplate = GM_getValue("推送设置.push_content", "");
+
 globalConfig.province = GM_getValue("信息配置.province", null);
 globalConfig.city = GM_getValue("信息配置.city", null);
 globalConfig.uname = GM_getValue("信息配置.uname", "宝宝");
-globalConfig.uname = GM_getValue("信息配置.love_day", null);
-globalConfig.tamplate = `
-🗓️{{DATA.date}}
-
-{{DATA.uname}}，今天是我们在一起的第{{love_day.DATA}}天，爱你❤️
-    
-今日{{DATA.city}}天气☁️：{{DATA.weather.weather}}
-当前温度🌡️: {{DATA.weather.temperature}}度
-最低温度🌡️: {{DATA.weather.min_temperature}}
-最高温度🌡️: {{DATA.weather.max_temperature}}
-
-{{DATA.weather.notice}}
-
-💌{{DATA.daily_one_sentences.earthy_love_words}}
-`.trim();
+globalConfig.love_day = GM_getValue("信息配置.love_day", null);
 
 const globalData = { // 用于存放数据
     // 推送人昵称(随意)
@@ -125,40 +115,45 @@ function pushSend(title, content, target = {}) {
 
 new Promise(async (resolve) => {
 
-    // 效验是否设置以下属性值
-    if (!globalConfig.accessKey) {
-        GM_notification({
-            title: "accessKey未设置",
-            text: "accessKey为空 请设置accessKey",
-        });
-        resolve(CAT_userConfig());
-    } else if (!globalConfig.province) {
-        GM_notification({
-            title: "未设置省份",
-            text: "请设置推送人的省份",
-        });
-        resolve(CAT_userConfig());
-    } else if (!globalConfig.city) {
-        GM_notification({
-            title: "未设置城市",
-            text: "请设置推送人的城市",
-        });
-        resolve(CAT_userConfig());
-    } else if (!globalConfig.love_day) {
-        GM_notification({
-            title: "未设置在一起时间",
-            text: "请设置在一起时间",
-        });
-        resolve(CAT_userConfig());
-    }
-
+    (function () {
+        // 效验是否设置以下属性值
+        if (!globalConfig.accessKey) {
+            GM_notification({
+                title: "accessKey未设置",
+                text: "accessKey为空 请设置accessKey",
+            });
+            CAT_userConfig();
+            throw new Error("accessKey为空 请设置accessKey");
+        } else if (!globalConfig.province) {
+            GM_notification({
+                title: "未设置省份",
+                text: "请设置推送人的省份",
+            });
+            CAT_userConfig();
+            throw new Error("请设置推送人的省份");
+        } else if (!globalConfig.city) {
+            GM_notification({
+                title: "未设置城市",
+                text: "请设置推送人的城市",
+            });
+            CAT_userConfig();
+            throw new Error("请设置推送人的城市");
+        } else if (!globalConfig.love_day) {
+            GM_notification({
+                title: "未设置在一起时间",
+                text: "请设置在一起时间",
+            });
+            CAT_userConfig();
+            throw new Error("请设置在一起时间");
+        }
+    })()
 
     // globalData.weather 初始化
     globalData.weather = await APIs.getWeather(globalData.province, globalData.city);
     globalData.daily_one_sentences.earthy_love_words = await APIs.getEarthyLoveWords();
     globalData.daily_one_sentences.moment_copyrighting = await APIs.getMomentCopyrighting();
     globalData.daily_one_sentences.poison_chicken_soup = await APIs.getPoisonChickenSoup();
-    const {content: note_en, note: note_cn} = await APIs.getCIBA();
+    const { content: note_en, note: note_cn } = await APIs.getCIBA();
     globalData.daily_one_sentences.note_cn = note_cn;
     globalData.daily_one_sentences.note_en = note_en;
     // 取上一次时间戳和当前时间戳然后除以24则得到在一起时间 (currentTime , lastTime) / 24 + 1

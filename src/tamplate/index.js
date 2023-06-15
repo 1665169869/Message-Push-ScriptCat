@@ -6,15 +6,20 @@
  * @FilePath: \scriptcat-push-weixin\src\tamplate\index.js
  * @Description: 这里是用于存放推送模板的数组
  */
-export const template = `
-🗓️{{date.DATA}}
 
-今天是我们在一起的第{{love_day.DATA}}天，爱你❤️
+const template = `
+🗓️{{DATA.date}}
+
+{{DATA.uname}}，今天是我们在一起的第{{love_day.DATA}}天，爱你❤️
     
-今日{{DATA.city}}天气☁️：{{tian_api_weather_weather_0.DATA}}
-温度🌡️: {{tian_api_weather_lowest_0.DATA}}-{{tian_api_weather_highest_0.DATA}}
-紫外线强度指数☀️: {{tian_api_weather_uv_index_0.DATA}}
-穿衣指数👚: {{tian_api_weather_tips_0.DATA}}
-    
-💌{{earthy_love_words.DATA}}
-`.trim()
+今日{{DATA.city}}天气☁️：{{DATA.weather.weather}}
+当前温度🌡️: {{DATA.weather.temperature}}度
+最低温度🌡️: {{DATA.weather.min_temperature}}
+最高温度🌡️: {{DATA.weather.max_temperature}}
+
+{{DATA.weather.notice}}
+
+💌{{DATA.daily_one_sentences.earthy_love_words}}
+`.trim();
+
+module.exports = template;

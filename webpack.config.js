@@ -10,6 +10,21 @@ const path = require('path');
 const ScriptCatWebpackPlugin = require('scriptcat-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+
+const template = `
+🗓️{{DATA.date}}
+
+{{DATA.uname}}，今天是我们在一起的第{{DATA.love_day}}天，爱你❤️
+    
+今日{{DATA.city}}天气☁️：{{DATA.weather.weather}}
+当前温度🌡️: {{DATA.weather.temperature}}度
+最低温度🌡️: {{DATA.weather.min_temperature}}
+最高温度🌡️: {{DATA.weather.max_temperature}}
+
+{{DATA.weather.notice}}
+
+💌{{DATA.daily_one_sentences.earthy_love_words}}
+`.trim();
 const USERCONFIG = {
     "信息配置": {
         uname: {
@@ -48,6 +63,7 @@ const USERCONFIG = {
             title: "推送内容",
             type: "textarea", // 等脚本猫更新支持长文本
             description: "推送的内容 支持模板字符串",
+            default: template
         }
     }
 }
@@ -64,7 +80,7 @@ module.exports = {
             file: "scriptcat-push-weixin-user.js",
             name: "微信推送定时小工具 - 脚本猫",
             namespace: "https://bbs.tampermonkey.net.cn/",
-            version: "0.1.0",
+            version: "20230615",
             description: "PushCat浏览器端,可作为接收设备通知,也可以作为发送端推送消息至其它设备",
             author: "i白羽",
             metadata: {

@@ -1,6 +1,6 @@
 {
   "name": "scriptcat-push-weixin",
-  "version": "1.0.0",
+  "version": "20230615",
   "description": "",
   "main": "PushCat.js",
   "scripts": {
