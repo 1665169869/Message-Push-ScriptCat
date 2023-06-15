@@ -81,7 +81,7 @@ module.exports = {
             name: "微信推送定时小工具 - 脚本猫",
             namespace: "https://bbs.tampermonkey.net.cn/",
             version: "20230615",
-            description: "PushCat浏览器端,可作为接收设备通知,也可以作为发送端推送消息至其它设备",
+            description: "微信推送定时小工具 - 脚本猫 支持自定义模板，拥有模板字符串，程序员给女朋友的每日推送提醒，专属于程序员的浪漫~",
             author: "i白羽",
             metadata: {
                 crontab: "* 10-23 once * *",
