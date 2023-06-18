@@ -86,6 +86,7 @@ module.exports = {
             description: "消息定时推送 -- 脚本猫 支持自定义模板，拥有模板字符串，程序员给女朋友的每日推送提醒，专属于程序员的浪漫~",
             author: "i白羽",
             metadata: {
+                connect: "*",
                 crontab: "* 10-23 once * *",
                 grant: [
                     "GM_xmlhttpRequest",
