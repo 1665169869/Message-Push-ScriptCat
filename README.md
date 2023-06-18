@@ -1,15 +1,15 @@
 <!--
  * @Author: 白羽
  * @Date: 2023-06-06 13:03:50
- * @LastEditors: 白羽
- * @LastEditTime: 2023-06-14 00:34:10
+ * @LastEditors: 白羽 1665169869@qq.com
+ * @LastEditTime: 2023-06-18 00:57:58
  * @FilePath: \scriptcat-push-weixin\README.md
  * @Description: 
 -->
-# scriptcat-push-wexin
+# Message-Push-ScriptCat
 
-#### 介绍
-微信推送定时小工具 - 脚本猫
+## 介绍
+消息定时推送 -- 脚本猫
 
 脚本猫上的是经过webpack打包压缩后的代码，如需源代码请前往下方👇
 
@@ -18,6 +18,14 @@
 [gitee](https://gitee.com/baiyu16/scriptcat-push-wexin/)
 
 [github](https://github.com/1665169869/scriptcat-push-weixin)
+
+## 食用方法
+
+首先你得安装浏览器扩展[ScriptCat](https://scriptcat.org/)
+
+安装好扩展后访问[消息定时推送 -- 脚本猫](https://scriptcat.org/script-show-page/1101)
+
+安装脚本，然后在脚本猫扩展里找到消息定时推送的脚本设置修改相关设置即可
 
 ## 模板字符串
 

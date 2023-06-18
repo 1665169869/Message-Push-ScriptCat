@@ -1,8 +1,8 @@
 /*
  * @Author: 白羽
  * @Date: 2023-06-05 20:47:21
- * @LastEditors: 白羽
- * @LastEditTime: 2023-06-14 00:00:08
+ * @LastEditors: 白羽 1665169869@qq.com
+ * @LastEditTime: 2023-06-18 01:14:14
  * @FilePath: \scriptcat-push-weixin\webpack.config.js
  * @Description: 
  */
@@ -68,20 +68,22 @@ const USERCONFIG = {
     }
 }
 
+const filename = "Message-Push-ScriptCat.user.js";
+const d = new Date();
 module.exports = {
     mode: "development",
     entry: "@/main.js",
     output: {
+        filename,
         path: path.resolve(__dirname, 'dist'),
-        filename: 'scriptcat-push-weixin-user.js'
     },
     plugins: [
         new ScriptCatWebpackPlugin({
-            file: "scriptcat-push-weixin-user.js",
-            name: "微信推送定时小工具 - 脚本猫",
+            file: filename,
+            name: "消息定时推送 -- 脚本猫",
             namespace: "https://bbs.tampermonkey.net.cn/",
-            version: "202306151351",
-            description: "微信推送定时小工具 - 脚本猫 支持自定义模板，拥有模板字符串，程序员给女朋友的每日推送提醒，专属于程序员的浪漫~",
+            version: `${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.getHours()}${d.getMinutes()}`,
+            description: "消息定时推送 -- 脚本猫 支持自定义模板，拥有模板字符串，程序员给女朋友的每日推送提醒，专属于程序员的浪漫~",
             author: "i白羽",
             metadata: {
                 crontab: "* 10-23 once * *",

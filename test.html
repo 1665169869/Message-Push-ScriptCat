@@ -1,8 +1,8 @@
 <!--
  * @Author: 白羽
  * @Date: 2023-06-05 18:49:02
- * @LastEditors: 白羽
- * @LastEditTime: 2023-06-13 21:37:09
+ * @LastEditors: 白羽 1665169869@qq.com
+ * @LastEditTime: 2023-06-17 13:00:17
  * @FilePath: \scriptcat-push-weixin\test.html
  * @Description: 
 -->
@@ -23,27 +23,18 @@
     </p>
     <script>
         const tamplate = `
-        🗓️{{DATA.date}}
 
-{{DATA.uname}}，今天是我们在一起的第{{love_day.DATA}}天，爱你❤️
-    
-今日{{DATA.city}}天气☁️：{{DATA.weather.weather}}
-当前温度🌡️: {{DATA.weather.temperature}}度
-最低温度🌡️: {{DATA.weather.min_temperature}}
-最高温度🌡️: {{DATA.weather.max_temperature}}
-
-{{DATA.notice}}
-
-💌{{earthy_love_words.DATA}}
+{{DATA.num}}
     `.trim();
-        const regex = /\{\{(DATA\.[_|a-z|A-Z\d|\w|\.]*)\}\}/gm;
-        regex.exec(tamplate)
-
-        let match;
-        while ((match = regex.exec(tamplate)) !== null) {
-            console.log(match[0], match[1]);
+        function replaceTemplate(DATA = {}, str = "") {
+            const regex = /\{\{(DATA\.[_|a-z|A-Z\d|\w|\.]*)\}\}/gm;
+            let matches = [...str.matchAll(regex)];
+            matches.forEach(match => {
+                str = str.replace(match[0], eval(match[1]));
+            });
+            return str;
         }
-        
+
     </script>
 </body>
 

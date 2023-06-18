@@ -109,4 +109,4 @@ dist/*
 test.html
 
 
-!/dist/scriptcat-push-weixin-user.js
+!dist/Message-Push-ScriptCat.user.js
