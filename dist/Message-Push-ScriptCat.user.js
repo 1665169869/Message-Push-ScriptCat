@@ -2,7 +2,7 @@
 // @name        消息定时推送 -- 脚本猫
 // @namespace   https://bbs.tampermonkey.net.cn/
 // @description 消息定时推送 -- 脚本猫 支持自定义模板，拥有模板字符串，程序员给女朋友的每日推送提醒，专属于程序员的浪漫~
-// @version     2023618926
+// @version     2023711839
 // @author      i白羽
 // @connect     *
 // @crontab     * 10-23 once * *

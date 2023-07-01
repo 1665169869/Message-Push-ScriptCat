@@ -1,9 +1,9 @@
 <!--
  * @Author: 白羽
  * @Date: 2023-06-06 13:03:50
- * @LastEditors: 白羽 1665169869@qq.com
- * @LastEditTime: 2023-06-18 00:57:58
- * @FilePath: \scriptcat-push-weixin\README.md
+ * @LastEditors: 白羽
+ * @LastEditTime: 2023-07-01 18:38:03
+ * @FilePath: \Message-Push-ScriptCat\README.md
  * @Description: 
 -->
 # Message-Push-ScriptCat
@@ -26,6 +26,10 @@
 安装好扩展后访问[消息定时推送 -- 脚本猫](https://scriptcat.org/script-show-page/1101)
 
 安装脚本，然后在脚本猫扩展里找到消息定时推送的脚本设置修改相关设置即可
+
+### AccessKey
+
+访问[脚本猫的工具箱](https://sct.icodef.com/)获取
 
 ## 模板字符串
 
